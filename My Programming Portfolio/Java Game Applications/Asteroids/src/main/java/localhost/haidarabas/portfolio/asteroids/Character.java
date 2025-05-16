@@ -1,6 +1,5 @@
 package localhost.haidarabas.portfolio.asteroids;
 
-import java.lang.Math;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.*;
 
