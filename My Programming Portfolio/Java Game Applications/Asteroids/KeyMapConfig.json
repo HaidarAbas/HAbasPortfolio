@@ -1,0 +1,7 @@
+{
+    "accelerate": "UP",
+    "turn left": "LEFT",
+    "turn right": "RIGHT",
+    "stop": "DOWN",
+    "shoot": "SPACE"
+}
