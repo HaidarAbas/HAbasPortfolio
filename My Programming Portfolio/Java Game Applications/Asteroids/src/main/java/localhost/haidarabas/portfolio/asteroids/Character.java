@@ -46,12 +46,12 @@ public abstract class Character {
      * @param xAccel Multiplier for translation along the x-axis
      * @param yAccel Multiplier for translation along the y-axis
      */
-    public void accelerate(double xAccel, double yAccel) {
+    public void accelerate(double accel) {
         double newMovementX = Math.cos(Math.toRadians(this.character.getRotate()));
         double newMovementY = Math.sin(Math.toRadians(this.character.getRotate()));
         
-        newMovementX *= xAccel;
-        newMovementY *= yAccel;
+        newMovementX *= accel;
+        newMovementY *= accel;
         
         this.movement = this.movement.add(newMovementX, newMovementY);
     }
@@ -93,6 +93,23 @@ public abstract class Character {
     public void move() {
         this.character.setTranslateX(this.character.getTranslateX() + this.movement.getX());
         this.character.setTranslateY(this.character.getTranslateY() + this.movement.getY());
+        
+        //Go too far **foward** along the x-axis and exit the bounds of the window
+        if (this.character.getBoundsInParent().getMinX() > App.WIDTH) {
+            this.character.setTranslateX((this.character.getBoundsInParent().getMinX() % App.WIDTH) - (this.character.getBoundsInParent().getWidth() / 2.5));
+        }
+        //Go too far **back** along the x-axis and exit the bounds of the window
+        if (this.character.getBoundsInParent().getMaxX() < 0) {
+            this.character.setTranslateX(this.character.getBoundsInParent().getMaxX() + App.WIDTH);
+        }
+        //Go too far **down** along the y-axis and exit the bounds of the window
+        if (this.character.getBoundsInParent().getMinY() > App.HEIGHT) {
+            this.character.setTranslateY((this.character.getBoundsInParent().getMinY() % App.HEIGHT) - (this.character.getBoundsInParent().getHeight() / 2.5));
+        }
+        //Go too far **up** along the y-axis and exit the bounds of the window
+        if (this.character.getBoundsInParent().getMaxY() < 0) {
+            this.character.setTranslateY(this.character.getBoundsInParent().getMaxY() + App.HEIGHT);
+        }
     }
     
     /**

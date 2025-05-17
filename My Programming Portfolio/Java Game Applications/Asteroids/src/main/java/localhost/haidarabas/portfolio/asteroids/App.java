@@ -1,20 +1,19 @@
 package localhost.haidarabas.portfolio.asteroids;
 
-import java.util.Map;
 import java.util.HashMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
@@ -25,6 +24,7 @@ public class App extends Application {
     private boolean turnLeft = false;
     private boolean turnRight = false;
     private boolean accelerate = false;
+    private List<Asteroid> asteroids;
     
     
     @Override
@@ -34,6 +34,9 @@ public class App extends Application {
         Scene scene = new Scene(pane);
         
         Character ship = new Ship(WIDTH / 2, HEIGHT / 2);
+        
+        generateAsteroids();
+        
         detectKeyPress(scene);
         new AnimationTimer() {
 
@@ -46,15 +49,23 @@ public class App extends Application {
                     ship.turnRight();
                 }
                 if (accelerate == true) {
-                    ship.accelerate(0.3, 0.3);
+                    ship.accelerate(0.3);
                 }
                 
                 ship.move();
                 ship.decelerate(1.3);
+                asteroids.forEach(ast -> ast.move());
+                
+                for (Asteroid ast: asteroids) {
+                    if (ship.collide(ast)) {
+                        stop();
+                    }
+                }
             }
         }.start();
         
         pane.getChildren().add(ship.getCharacter());
+        asteroids.forEach(ast -> pane.getChildren().add(ast.getCharacter()));
         stage.setTitle("Asteroids");
         stage.setScene(scene);
         stage.show();
@@ -64,7 +75,7 @@ public class App extends Application {
         launch(args);
     }
     
-    public void detectKeyPress(Scene scene) {
+    private void detectKeyPress(Scene scene) {
         File keyMapFile = new File("KeyMapConfig.json");
         
         if (keyMapFile.exists()) {
@@ -102,6 +113,20 @@ public class App extends Application {
             } catch (Exception e) {
                 System.out.println("Error: " + e);
             }
+        }
+    }
+    
+    private void generateAsteroids() {
+        this.asteroids = new ArrayList<>();
+        
+        Random rnd = new Random();
+        
+        //Ensure asteroids spawn in random spot in a couple of portions of pane. So as to not spawn on ship from inception
+        for (int c = 0; c < 5; c++) {
+            Asteroid asteroid1 = new Asteroid(rnd.nextInt(WIDTH / 4), rnd.nextInt(HEIGHT));
+            Asteroid asteroid2 = new Asteroid(rnd.nextInt(WIDTH / 4) * 4, rnd.nextInt(HEIGHT));
+            asteroids.add(asteroid1);
+            asteroids.add(asteroid2);
         }
     }
 
