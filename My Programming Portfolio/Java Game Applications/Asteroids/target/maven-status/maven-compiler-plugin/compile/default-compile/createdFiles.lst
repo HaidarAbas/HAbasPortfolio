@@ -1,6 +1,8 @@
-localhost\haidarabas\portfolio\asteroids\App.class
 localhost\haidarabas\portfolio\asteroids\Ship.class
 module-info.class
 localhost\haidarabas\portfolio\asteroids\Character.class
+localhost\haidarabas\portfolio\asteroids\PolygonGenerator.class
 localhost\haidarabas\portfolio\asteroids\App$2.class
+localhost\haidarabas\portfolio\asteroids\Asteroid.class
+localhost\haidarabas\portfolio\asteroids\App.class
 localhost\haidarabas\portfolio\asteroids\App$1.class
